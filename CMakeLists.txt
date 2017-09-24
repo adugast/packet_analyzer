@@ -10,4 +10,7 @@ project(packet_analyzer)
 add_executable(
     packet_analyzer
     src/main.c
+    src/get_args.c
+    src/packet_analyzer.c
+    src/tcp_packet.c
 )

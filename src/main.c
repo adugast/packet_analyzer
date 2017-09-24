@@ -1,13 +1,23 @@
 #include <stdio.h>
 
-int entry()
+#include "packet_analyzer.h"
+
+static void print_config(struct arguments *args)
 {
-    printf("[entry]");
-    return 0;
+    printf("---config_used---\n");
+    printf("protocol[%s]\n", args->protocol);
+    printf("-----------------\n");
 }
 
 int main(int argc, char *argv[])
 {
-    entry();
+    struct arguments args;
+
+    get_arguments(argc, argv, &args);
+
+    print_config(&args);
+
+    packet_analyzer(&args);
+
     return 0;
 }
