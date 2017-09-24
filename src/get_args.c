@@ -18,6 +18,7 @@ static void print_help(const char *binary_name)
 static void set_default_config(struct arguments *args)
 {
     args->protocol = "TCP";
+    args->output_file = "";
 }
 
 int get_arguments(int argc, char *argv[], struct arguments *args)
@@ -26,9 +27,10 @@ int get_arguments(int argc, char *argv[], struct arguments *args)
 
     set_default_config(args);
 
-    while ((c = getopt(argc, argv, "hp:")) != -1) {
+    while ((c = getopt(argc, argv, "hp:o:")) != -1) {
         switch (c) {
             case 'p': args->protocol = optarg; break;
+            case 'o': args->output_file = optarg; break;
             case 'h': print_help(argv[0]); exit(EXIT_SUCCESS);
             default: print_usage(argv[0]); exit(EXIT_FAILURE);
         }

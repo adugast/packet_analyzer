@@ -90,8 +90,7 @@ int packet_analyzer(struct arguments *args)
         printf("getprotobyname(%s):failed\n", args->protocol);
     } else {
         printf("getprotobyname(%s):success\n", args->protocol);
-        printf("%s:p_name[%s]:p_proto[%d]\n",
-            args->protocol, protocol->p_name, protocol->p_proto);
+        printf("%s:p_name[%s]:p_proto[%d]\n", args->protocol, protocol->p_name, protocol->p_proto);
     }
 
     //for every packet every proto: sock_raw = socket(AF_PACKET, SOCK_RAW, htons(ETH_P_ALL));

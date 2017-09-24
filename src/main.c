@@ -6,6 +6,7 @@ static void print_config(struct arguments *args)
 {
     printf("---config_used---\n");
     printf("protocol[%s]\n", args->protocol);
+    printf("path_file[%s]\n", args->output_file);
     printf("-----------------\n");
 }
 
