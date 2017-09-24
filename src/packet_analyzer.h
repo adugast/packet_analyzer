@@ -3,10 +3,12 @@
 
 #include <stdlib.h>
 #include <signal.h>
+#include <stdbool.h>
 
 struct arguments {
     const char *protocol;
     const char *output_file;
+    bool debug_mode;
 };
 
 int get_arguments(int argc, char *argv[], struct arguments *args);
