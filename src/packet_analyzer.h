@@ -13,7 +13,7 @@ struct arguments {
 
 int get_arguments(int argc, char *argv[], struct arguments *args);
 int packet_analyzer(struct arguments *args);
-int print_tcp_packet(const unsigned char *packet, ssize_t packet_size);
+int print_tcp_packet(const unsigned char *packet);
 void set_signal(int signal);
 
 #endif /* __PACKET_ANALYZER_H__ */

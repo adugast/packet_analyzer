@@ -2,6 +2,7 @@
 
 #include "packet_analyzer.h"
 
+
 static void print_config(struct arguments *args)
 {
     printf("---config_used---\n");
@@ -11,12 +12,12 @@ static void print_config(struct arguments *args)
     printf("-----------------\n");
 }
 
+
 int main(int argc, char *argv[])
 {
     struct arguments args;
 
     get_arguments(argc, argv, &args);
-
     if (args.debug_mode == true) {
         print_config(&args);
     }

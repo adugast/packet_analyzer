@@ -4,25 +4,29 @@
 
 #include "packet_analyzer.h"
 
+
 static void print_usage(const char *binary_name)
 {
     printf("Usage: %s [ -p protocol ] [ -o output_file ] [ -d ]\n", binary_name);
 }
 
+
 static void print_help(const char *binary_name)
 {
     printf("Usage: %s [ -p protocol ] [ -o output_file ] [ -d ]\n", binary_name);
-    printf("-p [protocol] : Available protocol:TCP, UDP\n");
-    printf("-o [output_file] : Log info in output_file\n");
-    printf("-d : Activate the debug mode\n");
+    printf("-p [protocol] : available protocol:tcp, udp\n");
+    printf("-o [output_file] : log info in output_file\n");
+    printf("-d : activate the debug mode\n");
 }
+
 
 static void set_default_config(struct arguments *args)
 {
-    args->protocol = "TCP";
+    args->protocol = "tcp";
     args->output_file = "";
     args->debug_mode = false;
 }
+
 
 int get_arguments(int argc, char *argv[], struct arguments *args)
 {
