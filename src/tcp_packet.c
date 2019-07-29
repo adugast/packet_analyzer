@@ -1,27 +1,26 @@
 #include <stdio.h>
-#include <stdio.h>
-#include <netinet/ip.h>
+#include <arpa/inet.h>
 #include <netinet/tcp.h>
 
-int print_tcp_packet(const unsigned char *packet)
+
+void tcp_dump_packet(const unsigned char *packet)
 {
     struct tcphdr *tcph = (struct tcphdr *)packet;
 
     printf("TCP Header\n");
-    printf("-source port:%u\n", ntohs(tcph->source));
-    printf("-destination Port:%u\n", ntohs(tcph->dest));
+    printf("-source:%u\n", ntohs(tcph->source));
+    printf("-destination:%u\n", ntohs(tcph->dest));
     printf("-sequence number:%u\n", ntohl(tcph->seq));
     printf("-acknowledge number:%u\n", ntohl(tcph->ack_seq));
     printf("-data offset:%d bytes\n", (unsigned int)tcph->doff * 4);
-    printf("-urgent flag:%d\n", (unsigned int)tcph->urg);
-    printf("-acknowledgement flag:%d\n", (unsigned int)tcph->ack);
-    printf("-push flag:%d\n", (unsigned int)tcph->psh);
-    printf("-reset flag:%d\n", (unsigned int)tcph->rst);
-    printf("-synchronise flag:%d\n", (unsigned int)tcph->syn);
     printf("-finish flag:%d\n", (unsigned int)tcph->fin);
+    printf("-synchronize flag:%d\n", (unsigned int)tcph->syn);
+    printf("-reset flag:%d\n", (unsigned int)tcph->rst);
+    printf("-push flag:%d\n", (unsigned int)tcph->psh);
+    printf("-acknowledgement flag:%d\n", (unsigned int)tcph->ack);
+    printf("-urgent flag:%d\n", (unsigned int)tcph->urg);
     printf("-window size:%d\n", ntohs(tcph->window));
     printf("-checksum:%d\n", ntohs(tcph->check));
-    printf("-urgent pointer:%d\n", tcph->urg_ptr);
-
-    return 0;
+    printf("-urgent pointer:%d\n", ntohs(tcph->urg_ptr));
 }
+

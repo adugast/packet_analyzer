@@ -28,7 +28,7 @@ static void set_default_config(struct arguments *args)
 }
 
 
-int get_arguments(int argc, char *argv[], struct arguments *args)
+void get_arguments(int argc, char *argv[], struct arguments *args)
 {
     int c = 0;
 
@@ -43,6 +43,5 @@ int get_arguments(int argc, char *argv[], struct arguments *args)
             default: print_usage(argv[0]); exit(EXIT_FAILURE);
         }
     }
-
-    return 0;
 }
+

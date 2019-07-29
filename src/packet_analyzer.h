@@ -1,9 +1,9 @@
 #ifndef __PACKET_ANALYZER_H__
 #define __PACKET_ANALYZER_H__
 
-#include <stdlib.h>
-#include <signal.h>
+
 #include <stdbool.h>
+
 
 struct arguments {
     const char *protocol;
@@ -11,9 +11,11 @@ struct arguments {
     bool debug_mode;
 };
 
-int get_arguments(int argc, char *argv[], struct arguments *args);
+
+void get_arguments(int argc, char *argv[], struct arguments *args);
 int packet_analyzer(struct arguments *args);
-int print_tcp_packet(const unsigned char *packet);
-void set_signal(int signal);
+int tcp_dump_packet(const unsigned char *packet);
+int udp_dump_packet(const unsigned char *packet);
+
 
 #endif /* __PACKET_ANALYZER_H__ */

@@ -16,4 +16,5 @@ add_executable(
     src/get_args.c
     src/packet_analyzer.c
     src/tcp_packet.c
+    src/udp_packet.c
 )
