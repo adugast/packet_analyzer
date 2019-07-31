@@ -6,8 +6,6 @@
 #include <signal.h>
 #include <netdb.h>
 #include <arpa/inet.h>
-#include <netinet/ip.h>
-#include <linux/if_ether.h>
 #include <poll.h>
 
 #include "packet_analyzer.h"
@@ -22,53 +20,73 @@ static void signal_handler(__attribute__((unused)) int signum)
 }
 
 
-// protocol number read from /etc/protocols
-static int process_packet_protocols(const unsigned char *network_packet)
+const struct ethhdr *get_ethhdr(const unsigned char *packet)
 {
-    struct iphdr *ip = (struct iphdr *)(network_packet + sizeof(struct ethhdr));
-
-    switch (ip->protocol) {
-        case 6: tcp_dump_packet(network_packet); break;
-        case 17: udp_dump_packet(network_packet); break;
-    }
-
-    return 0;
+    return (const struct ethhdr *)(packet);
 }
 
 
-static void dump_ethernet_header(const unsigned char *network_packet)
+const struct iphdr *get_iphdr(const unsigned char *packet)
 {
-    struct ethhdr *eth = (struct ethhdr *)(network_packet);
+    return (const struct iphdr *)(packet + sizeof(struct ethhdr));
+}
 
+
+static void dump_ethernet_header(const struct ethhdr *eth)
+{
     printf("Ethernet Header\n");
-    printf("-Source Address : %.2X-%.2X-%.2X-%.2X-%.2X-%.2X\n",
+    printf("\t|-Source Address : %.2X-%.2X-%.2X-%.2X-%.2X-%.2X\n",
             eth->h_source[0], eth->h_source[1], eth->h_source[2],
             eth->h_source[3], eth->h_source[4], eth->h_source[5]);
-    printf("-Destination Address : %.2X-%.2X-%.2X-%.2X-%.2X-%.2X\n",
+    printf("\t|-Destination Address : %.2X-%.2X-%.2X-%.2X-%.2X-%.2X\n",
             eth->h_dest[0], eth->h_dest[1], eth->h_dest[2],
             eth->h_dest[3], eth->h_dest[4], eth->h_dest[5]);
-    printf("-Protocol : %d\n", eth->h_proto);
+    printf("\t|-Protocol : %d\n\n", eth->h_proto);
 }
 
 
-static void dump_ip_header(const unsigned char *network_packet)
+static void dump_ip_header(const struct iphdr *ip)
 {
-    struct iphdr *ip = (struct iphdr *)(network_packet + sizeof(struct ethhdr));
     struct in_addr in_saddr = { .s_addr = ip->saddr };
     struct in_addr in_daddr = { .s_addr = ip->daddr };
 
-    printf("Ip Header\n");
-    printf("-Version : %d\n", (unsigned int)ip->version);
-    printf("-Internet Header Length : %d DWORDS or %d Bytes\n",
+    printf("IP Header\n");
+    printf("\t|-Version : %d\n", (unsigned int)ip->version);
+    printf("\t|-Internet Header Length : %d DWORDS or %d Bytes\n",
             (unsigned int)ip->ihl, ((unsigned int)(ip->ihl))*4);
-    printf("-Type Of Service : %d\n", (unsigned int)ip->tos);
-    printf("-Total Length : %d Bytes\n", ntohs(ip->tot_len));
-    printf("-Identification : %d\n", ntohs(ip->id));
-    printf("-Time To Live : %d\n", (unsigned int)ip->ttl);
-    printf("-Protocol : %d\n", (unsigned int)ip->protocol);
-    printf("-Header Checksum : %d\n", ntohs(ip->check));
-    printf("-Source IP : %s\n", inet_ntoa(in_saddr));
-    printf("-Destination IP : %s\n", inet_ntoa(in_daddr));
+    printf("\t|-Type Of Service : %d\n", (unsigned int)ip->tos);
+    printf("\t|-Total Length : %d Bytes\n", ntohs(ip->tot_len));
+    printf("\t|-Identification : %d\n", ntohs(ip->id));
+    printf("\t|-Time To Live : %d\n", (unsigned int)ip->ttl);
+    printf("\t|-Protocol : %d\n", (unsigned int)ip->protocol);
+    printf("\t|-Header Checksum : %d\n", ntohs(ip->check));
+    printf("\t|-Source IP : %s\n", inet_ntoa(in_saddr));
+    printf("\t|-Destination IP : %s\n\n", inet_ntoa(in_daddr));
+}
+
+
+// protocol number read from /etc/protocols
+static int process_packets(const unsigned char *network_packet)
+{
+    const struct ethhdr *eth = get_ethhdr(network_packet);
+    const struct iphdr *ip = get_iphdr(network_packet);
+
+    int protocol = ip->protocol;
+    switch (protocol) {
+        case IPPROTO_TCP: printf("\n********************TCP Packet********************\n"); break;
+        case IPPROTO_UDP: printf("\n********************UDP Packet********************\n"); break;
+        default: printf("\n********************UNKNOWN Packet********************\n"); break;
+    }
+
+    dump_ethernet_header(eth);
+    dump_ip_header(ip);
+
+    switch (protocol) {
+        case IPPROTO_TCP: tcp_dump_packet(network_packet); break;
+        case IPPROTO_UDP: udp_dump_packet(network_packet); break;
+    }
+
+    return 0;
 }
 
 
@@ -82,9 +100,7 @@ static int read_socket(int socket)
         return -1;
     }
 
-    dump_ethernet_header(packet);
-    dump_ip_header(packet);
-    process_packet_protocols(packet);
+    process_packets(packet);
 
     // Just a sleep to limit the speed of the loop
     // Can be remove or modified without impact
