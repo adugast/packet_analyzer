@@ -1,4 +1,4 @@
-# packet_analyzer [![Language: C](https://img.shields.io/badge/Language-C-brightgreen.svg)](https://en.wikipedia.org/wiki/C_(programming_language))  [![Library: ncurses](https://img.shields.io/badge/Library-ncurses-brightgreen.svg)](https://www.gnu.org/software/ncurses/)  [![Builder: CMake](https://img.shields.io/badge/Builder-CMake-brightgreen.svg)](https://cmake.org/)  [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
+# packet_analyzer [![Language: C](https://img.shields.io/badge/Language-C-brightgreen.svg)](https://en.wikipedia.org/wiki/C_(programming_language)) [![Builder: CMake](https://img.shields.io/badge/Builder-CMake-brightgreen.svg)](https://cmake.org/)  [![License: MIT](https://img.shields.io/badge/License-MIT-brightgreen.svg)](https://opensource.org/licenses/MIT)
 
 ## Introduction
 
@@ -92,10 +92,10 @@ explain raw socket, protocols, osi model, encapsulation and network packets
 
 Description of the headers in linux system:
 
-/usr/include/linux/if_ether.h
-/usr/include/netinet/ip.h
-/usr/include/netinet/tcp.h
-/usr/include/netinet/udp.h
+- /usr/include/linux/if_ether.h
+- /usr/include/netinet/ip.h
+- /usr/include/netinet/tcp.h
+- usr/include/netinet/udp.h
 
 ## More info:
 

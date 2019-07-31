@@ -26,14 +26,14 @@ void check_root_user()
 
 int main(int argc, char *argv[])
 {
-    check_root_user();
-
     struct arguments args;
 
     get_arguments(argc, argv, &args);
     if (args.debug_mode == true) {
         print_config(&args);
     }
+
+    check_root_user();
 
     packet_analyzer(&args);
 
