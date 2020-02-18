@@ -8,7 +8,7 @@
 
 Clone the project to retrieve the sources:
 ```
-$>git clone https://github.com/pestbuns/packet_analyzer.git
+$>git clone https://github.com/adugast/packet_analyzer.git
 ```
 
 Go in the build directory of seashell:
